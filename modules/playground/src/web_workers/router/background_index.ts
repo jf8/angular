@@ -1,15 +1,15 @@
-import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
-import {bootstrapApp} from '@angular/platform-browser-dynamic';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 
-import {WORKER_APP_LOCATION_PROVIDERS} from '@angular/platform-browser';
+import {platformWorkerAppDynamic} from '@angular/platform-webworker-dynamic';
 
-import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import {App} from './index_common';
+import {AppModule} from './index_common';
 
 export function main() {
-  bootstrapApp(App, [
-    ROUTER_PROVIDERS,
-    WORKER_APP_LOCATION_PROVIDERS,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
-  ]);
+  platformWorkerAppDynamic().bootstrapModule(AppModule);
 }

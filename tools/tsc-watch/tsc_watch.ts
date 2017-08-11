@@ -1,4 +1,15 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/* tslint:disable:no-console  */
 import {spawn} from 'child_process';
+import {platform} from 'os';
+import {normalize} from 'path';
 import {resolve} from 'url';
 
 enum State {
@@ -7,27 +18,25 @@ enum State {
   error
 }
 
-export const TSC = 'node_modules/typescript/bin/tsc';
-export type Command = (stdIn, stdErr) => Promise<number>;
+export const TSC = normalize('node_modules/.bin/tsc') + (/^win/.test(platform()) ? '.cmd' : '');
+export type Command = (stdIn: any, stdErr: any) => Promise<number>;
 
 export class TscWatch {
   private tsconfig: string;
-  private start: string | RegExp;
-  private error: string | RegExp;
-  private complete: string | RegExp;
-  private onStartCmds: Array<string[] | Command>;
-  private onChangeCmds: Array<string[] | Command>;
+  private start: string|RegExp;
+  private error: string|RegExp;
+  private complete: string|RegExp;
+  private onStartCmds: Array<string[]|Command>;
+  private onChangeCmds: Array<string[]|Command>;
   private state: State;
   private triggered: Promise<number> = null;
   private runOnce: boolean = false;
 
   constructor({tsconfig, start, error, complete, onStartCmds = null, onChangeCmds = null}: {
     tsconfig: string,
-    error: string | RegExp,
+    error: string|RegExp,
     start: string,
-    complete: string,
-    onStartCmds?: Array<string[] | Command>,
-    onChangeCmds?: Array<string[] | Command>
+    complete: string, onStartCmds?: Array<string[]|Command>, onChangeCmds?: Array<string[]|Command>
   }) {
     console.log('Watching:', tsconfig, 'in', process.cwd());
     this.tsconfig = tsconfig;
@@ -39,30 +48,31 @@ export class TscWatch {
   }
 
   watch() {
-    var args = [TSC, '--project', this.tsconfig];
+    const args = [TSC, '--emitDecoratorMetadata', '--project', this.tsconfig];
     if (!this.runOnce) args.push('--watch');
-    var tsc =
+    const tsc =
         this.runCmd(args, {}, (d) => this.consumeLine(d, false), (d) => this.consumeLine(d, true));
     if (this.runOnce) {
       tsc.then(() => this.triggerCmds(), code => process.exit(code));
     }
     this.state = State.waiting;
-    this.onStartCmds.forEach((cmd) => this.runCmd(cmd, () => null, () => null));
+    this.onStartCmds.forEach((cmd) => this.runCmd(cmd, null, () => null, () => null));
   }
 
-  private runCmd(argsOrCmd: string[] | Command, env?, stdOut = pipeStdOut,
-                 stdErr = pipeStdErr): Promise<number> {
+  private runCmd(
+      argsOrCmd: string[]|Command, env?: {[k: string]: string}, stdOut = pipeStdOut,
+      stdErr = pipeStdErr): Promise<number> {
     if (typeof argsOrCmd == 'function') {
       return (argsOrCmd as Command)(stdErr, stdOut);
     } else if (argsOrCmd instanceof Array) {
-      var args = argsOrCmd as Array<string>;
+      const args = argsOrCmd as Array<string>;
       return <any>new Promise((resolve, reject) => {
-               var [cmd, ...options] = args;
+               const [cmd, ...options] = args;
                console.log('=====>', cmd, options.join(' '));
-               var childProcess = spawn(cmd, options, {stdio: 'pipe'});
+               const childProcess = spawn(cmd, options, {stdio: 'pipe'});
                childProcess.stdout.on('data', stdOut);
                childProcess.stderr.on('data', stdErr);
-               var onExit = () => childProcess.kill();
+               const onExit = () => childProcess.kill();
                childProcess.on('close', (code: number) => {
                  process.removeListener('exit', onExit);
                  console.log('EXIT:', code, '<=====', args.join(' '));
@@ -87,7 +97,7 @@ export class TscWatch {
   }
 
   consumeLine(buffer: Buffer, isStdError: boolean) {
-    var line = '' + buffer;
+    const line = '' + buffer;
     if (contains(line, this.start)) {
       console.log('==============================================================================');
       stdOut(buffer, isStdError);
@@ -104,8 +114,8 @@ export class TscWatch {
         this.state = State.idle;
       } else {
         if (this.triggered) {
-          this.triggered.then(() => this.triggerCmds(),
-                              (e) => {console.log("Error while running commands....", e)});
+          this.triggered.then(
+              () => this.triggerCmds(), (e) => console.log('Error while running commands....', e));
         } else {
           this.triggerCmds();
         }
@@ -116,10 +126,10 @@ export class TscWatch {
   }
 
   triggerCmds() {
-    var cmdPromise: Promise<number> = Promise.resolve();
-    this.onChangeCmds.forEach((cmd: string[] | Command) => {cmdPromise = cmdPromise.then(() => {
-                                return this.runCmd(<string[]>cmd);
-                              })});
+    let cmdPromise: Promise<number> = Promise.resolve(0);
+    this.onChangeCmds.forEach(
+        (cmd: string[] | Command) => cmdPromise =
+            cmdPromise.then(() => this.runCmd(<string[]>cmd)));
     cmdPromise.then(() => this.triggered = null, (code) => {
       if (this.runOnce) {
         if (typeof code != 'number') {
@@ -153,7 +163,7 @@ function contains(line: string, text: string | RegExp): boolean {
   }
 }
 
-export function reportError(e) {
+export function reportError(e: any) {
   if (e.message && e.stack) {
     console.error(e.message);
     console.error(e.stack);
@@ -164,9 +174,9 @@ export function reportError(e) {
   return Promise.reject(e);
 }
 
-function pipeStdOut(d) {
+function pipeStdOut(d: any) {
   process.stdout.write(d);
 }
-function pipeStdErr(d) {
+function pipeStdErr(d: any) {
   process.stderr.write(d);
 }

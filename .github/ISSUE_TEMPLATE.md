@@ -1,16 +1,57 @@
-**IMPORTANT**: This repository's issues are reserved for feature requests and bug reports. Do not submit support requests here, see https://github.com/angular/angular/blob/master/CONTRIBUTING.md#question. 
+<!--
+PLEASE HELP US PROCESS GITHUB ISSUES FASTER BY PROVIDING THE FOLLOWING INFORMATION.
+
+ISSUES MISSING IMPORTANT INFORMATION MAY BE CLOSED WITHOUT INVESTIGATION.
+-->
+
+## I'm submitting a...
+<!-- Check one of the following options with "x" -->
+<pre><code>
+[ ] Regression (a behavior that used to work and stopped working in a new release)
+[ ] Bug report  <!-- Please search GitHub for a similar issue or PR before submitting -->
+[ ] Feature request
+[ ] Documentation issue or request
+[ ] Support request => Please do not submit support request here, instead see https://github.com/angular/angular/blob/master/CONTRIBUTING.md#question
+</code></pre>
+
+## Current behavior
+<!-- Describe how the issue manifests. -->
 
 
-**Steps to reproduce and a minimal demo of the problem**
-
-_Use https://plnkr.co or similar -- try this template as a starting point: http://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5_
-
-_What steps should we try in your demo to see the problem?_
-
-**Current behavior**
+## Expected behavior
+<!-- Describe what the desired behavior would be. -->
 
 
-**Expected/desired behavior**
+## Minimal reproduction of the problem with instructions
+<!--
+For bug reports please provide the *STEPS TO REPRODUCE* and if possible a *MINIMAL DEMO* of the problem via
+https://plnkr.co or similar (you can use this template as a starting point: http://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5).
+-->
+
+## What is the motivation / use case for changing the behavior?
+<!-- Describe the motivation or the concrete use case. -->
 
 
-**Other information**
+## Environment
+
+<pre><code>
+Angular version: X.Y.Z
+<!-- Check whether this is still an issue in the most recent Angular version -->
+
+Browser:
+- [ ] Chrome (desktop) version XX
+- [ ] Chrome (Android) version XX
+- [ ] Chrome (iOS) version XX
+- [ ] Firefox version XX
+- [ ] Safari (desktop) version XX
+- [ ] Safari (iOS) version XX
+- [ ] IE version XX
+- [ ] Edge version XX
+ 
+For Tooling issues:
+- Node version: XX  <!-- run `node --version` -->
+- Platform:  <!-- Mac, Linux, Windows -->
+
+Others:
+<!-- Anything else relevant?  Operating system version, IDE, package manager, HTTP server, ... -->
+</code></pre>

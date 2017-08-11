@@ -7,14 +7,24 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../dist/tools/",
-    "paths": {
-    },
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {},
     "rootDir": ".",
     "sourceMap": true,
     "inlineSources": true,
-    "target": "es5"
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "target": "es5",
+    "skipLibCheck": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "ngc-wrapped",
+    "typings-test",
+    "public_api_guard",
+    "docs"
   ]
 }

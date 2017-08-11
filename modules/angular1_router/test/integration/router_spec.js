@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
 'use strict';
 
 describe('router', function () {
@@ -34,7 +42,7 @@ describe('router', function () {
   it('should bind the component to the current router', function() {
     var router;
     registerComponent('homeCmp', {
-      bindings: { $router: '=' },
+      providers: { $router: '=' },
       controller: function($scope, $element) {
         this.$routerOnActivate = function() {
           router = this.$router;
@@ -148,7 +156,7 @@ describe('router', function () {
   it('should provide the root level router', function() {
     registerComponent('homeCmp', {
       template: 'Home ({{homeCmp.isAdmin}})',
-      bindings: {
+      providers: {
         $router: '<'
       }
     });
@@ -175,8 +183,8 @@ describe('router', function () {
   function registerComponent(name, options) {
 
     var definition = {
-      bindings: options.bindings,
-      controller: getController(options),
+      providers: options.providers,
+      controller: getController(options)
     };
     if (options.template) definition.template = options.template;
     if (options.templateUrl) definition.templateUrl = options.templateUrl;

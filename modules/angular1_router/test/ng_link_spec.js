@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
 'use strict';
 
 describe('ngLink', function () {
@@ -139,6 +147,18 @@ describe('ngLink', function () {
       var elt = compile('<a ng-link="[\'/One\']">one</a> | <div ng-outlet></div>');
       navigateTo('/');
       expect(elt.find('a').attr('class')).toBe('ng-link-active');
+    });
+
+    it('should not add a href if link attributes are undefined', function () {
+      setup({baseHref: baseHref, html5Mode: html5Mode, hashPrefix: hashPrefix});
+      configureRouter([
+        { path: '/a', component: 'oneCmp' },
+        { path: '/b', component: 'twoCmp', name: 'Two' }
+      ]);
+
+      var elt = compile('<a ng-link="something.undefined">link</a> | outer { <div ng-outlet></div> }');
+      navigateTo('/a');
+      expect(elt.find('a').hasAttr('href')).toBeFalsy();
     });
   }
 

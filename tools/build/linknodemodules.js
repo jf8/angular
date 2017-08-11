@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
 var fs = require('fs');
 var path = require('path');
 
@@ -8,8 +16,7 @@ module.exports = function(gulp, plugins, config) {
       console.log('creating link', linkDir, sourceDir);
       try {
         fs.symlinkSync(sourceDir, linkDir, 'dir');
-      }
-      catch(e) {
+      } catch (e) {
         var sourceDir = path.join(config.dir, relativeFolder);
         console.log('linking failed: trying to hard copy', linkDir, sourceDir);
         copyRecursiveSync(sourceDir, linkDir);
@@ -31,18 +38,17 @@ module.exports = function(gulp, plugins, config) {
       symlink(relativeFolder, linkDir);
     });
     // Also symlink tools we release independently to NPM, so tests can require metadata, etc.
-    symlink('../../tools/metadata', path.join(nodeModulesDir, 'ts-metadata-collector'));
+    symlink('../../tools/metadata', path.join(nodeModulesDir, 'tsc-wrapped'));
   };
 };
 
-function copyRecursiveSync (src, dest) {
+function copyRecursiveSync(src, dest) {
   if (fs.existsSync(src)) {
     var stats = fs.statSync(src);
     if (stats.isDirectory()) {
       fs.mkdirSync(dest);
       fs.readdirSync(src).forEach(function(childItemName) {
-        copyRecursiveSync(path.join(src, childItemName),
-                          path.join(dest, childItemName));
+        copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
       });
     } else {
       fs.writeFileSync(dest, fs.readFileSync(src));

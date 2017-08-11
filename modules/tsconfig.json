@@ -1,35 +1,36 @@
 {
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true
-  },
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../dist/all/",
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
     "paths": {
-      "selenium-webdriver": ["./@angular/typings/selenium-webdriver/selenium-webdriver.d.ts"],
+      "selenium-webdriver": ["../node_modules/@types/selenium-webdriver/index.d.ts"],
       "rxjs/*": ["../node_modules/rxjs/*"],
-      "@angular/*": ["./@angular/*"],
-      "ts-metadata-collector": ["../dist/tools/ts-metadata-collector"]
+      "@angular/*": ["../dist/all/@angular/*"],
+      "@angular/tsc-wrapped": ["../dist/packages-dist/tsc-wrapped"],
+      "@angular/tsc-wrapped/*": ["../dist/packages-dist/tsc-wrapped/*"]
     },
     "rootDir": ".",
     "inlineSourceMap": true,
-    "target": "es5"
+    "lib": ["es5", "dom", "es2015.promise", "es2015.collection", "es2015.iterable"],
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "target": "es5",
+    "types": ["angularjs"]
   },
   "exclude": [
     "angular1_router",
-    "angular2",
-    "benchmarks",
+    "benchmarks/e2e_test/old",
+    "benchmarks/src/old",
+    "benchmarks/src/**/index_aot.ts",
     "benchmarks_external",
-    "benchpress",
     "payload_tests",
-    "rollup-test",
-    "upgrade-ts2dart.d.ts",
-    "zone-ts2dart.d.ts",
-    "@angular/compiler_cli/integrationtest"
+    "rollup-test"
   ]
 }

@@ -1,16 +1,28 @@
-import {bootstrap} from '@angular/platform-browser-dynamic';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 
-import {Renderer, ElementRef, Component, Directive, Injectable} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+
 import {MyCmp} from './app/my_cmp';
 
 export function main() {
-  bootstrap(RelativeApp);
+  platformBrowserDynamic().bootstrapModule(ExampleModule);
 }
 
 @Component({
   selector: 'relative-app',
-  directives: [MyCmp],
   template: `component = <my-cmp></my-cmp>`,
 })
 export class RelativeApp {
+}
+
+@NgModule({declarations: [RelativeApp, MyCmp], bootstrap: [RelativeApp], imports: [BrowserModule]})
+class ExampleModule {
 }
